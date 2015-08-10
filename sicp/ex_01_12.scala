@@ -3,12 +3,10 @@
 // ------------------------------------
 
 object SICP_01_12 {
-  def pascElem( row:Int, col:Int ) : Int = {
-     if( row == col || col == 1 ) {
-       1
-     } else {
-       pascElem( row - 1, col ) + pascElem( row - 1, col - 1 )
-     } 
+  def pascElem( row:Int, col:Int ) : Int = col match { 
+     case 1 | `row`  => 1
+     case _          => pascElem( row - 1, col ) + 
+                        pascElem( row - 1, col - 1 ) 
   } 
 
  // should print 10
