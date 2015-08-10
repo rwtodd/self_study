@@ -1,0 +1,8 @@
+;; SICP ex 1.12 ... element of pascal's triangle.
+
+(define (pasc-element row col)
+  (cond ((= row col) 1)
+        ((= col 1) 1)
+        (#t (+ (pasc-element (- row 1) col)
+               (pasc-element (- row 1) (- col 1))))))
+

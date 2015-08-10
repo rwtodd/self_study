@@ -1,0 +1,23 @@
+; SICP ex 1.11
+; -------------------
+
+; recursive version
+(define (f x)
+  (if (< x 3)
+    x
+    (+ (f (- x 1))
+      (* 2 (f (- x 2)))
+      (* 3 (f (- x 3))))))
+
+; iterative version...
+(define (f2 x)
+  (define (f-iter cur a1 a2 a3)
+    (if (= cur (+ x 1))
+      a1
+      (f-iter (+ cur 1)
+              (+ a1 (* 2 a2) (* 3 a3))
+              a1
+              a2)))
+  (if (< x 3)
+    x
+    (f-iter 3 2 1 0)))
