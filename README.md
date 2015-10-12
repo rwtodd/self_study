@@ -5,6 +5,7 @@ I'll go at different rates.
 
 ## In Progress
 
+ + **bird_wadler/** _Introduction to Functional Programming_, 1st ed.
  + **sicp/** the _Structure and Interpretation of Computer Programs_.
  + **fp_in_scala/** _Functional Programming in Scala_.
 
