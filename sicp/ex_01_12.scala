@@ -10,6 +10,6 @@ object SICP_01_12 {
   } 
 
  // should print 10
- def main( argv:Array[String] ) = println( pascElem( 6, 3 ) ) 
+ def main( argv: Array[String] ) = println( pascElem( 6, 3 ) ) 
 
 }
