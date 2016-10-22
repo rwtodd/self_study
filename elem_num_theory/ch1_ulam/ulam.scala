@@ -1,3 +1,5 @@
+package com.waywardcode.numseries
+
 import java.util.{Collections,Map,NavigableMap,TreeMap}
 import java.math.BigInteger
 
@@ -6,16 +8,21 @@ import java.math.BigInteger
 //    u(n) = least number > a(n-1) which is the unique sum of two distinct 
 //           earlier sums.
 //
-// The class below represents an Ulam sequences of type Stream[BigInteger]
+// The object/class below generates Ulam sequences of type Stream[BigInteger]
+// Usage:   UlamSeries(1,2).take(10).toList // or whatever...
 //
-class UlamSeries(a: BigInteger, b: BigInteger) {
+object UlamSeries {
+   def apply(a: BigInteger, b: BigInteger) : Stream[BigInteger] = 
+        new UlamSeries(a,b).series
+   def apply(a: Int, b: Int) : Stream[BigInteger] = 
+        apply( BigInteger.valueOf(a.toLong), BigInteger.valueOf(b.toLong) )
+}
+
+class UlamSeries private (a: BigInteger, b: BigInteger) {
      val series : Stream[BigInteger] = 
              a #:: 
              computeNext(a, new TreeMap[BigInteger, Int](Collections.singletonMap(b, 0)))  
          
-     def this(sma: Int, smb: Int) = this( BigInteger.valueOf(sma.toLong), 
-                                          BigInteger.valueOf(smb.toLong) )
-
      private def computeNext(largest : BigInteger, 
                              backlog : NavigableMap[BigInteger, Int]) 
            : Stream[BigInteger] = {
