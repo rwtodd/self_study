@@ -1,32 +1,32 @@
-import qualified Data.Map as M
-
 -- the Ulam Sequence, from any seed a, b
-
 ulam :: Integer -> Integer -> [Integer]
 ulam a b = 
-  -- we start the computation off with the given 'a', seeding the backlog map with 'b'
-  let nums                    = a : nextUlam a (M.singleton b 1)
+  -- we start the computation off with the given 'a', seeding the backlog with 'b'
+  let nums                    = a : nextUlam a [(b, True)]
       nextUlam recent backlog = 
           let -- extract the next Ulam sequence value, and the remaining backlog
-              (minKey, rest)  = getMin updated  
-                                  where -- a helper function to extract the minimum key from the map with value == 1,
+              (minNum, rest)  = getMin (merge nextBatch backlog)  
+                                  where -- a helper function to extract the minimum backlog entry with snd == True,
                                         -- discarding entries until a proper one is found
-                                        getMin mapping = case (M.minViewWithKey mapping) of
-                                                             Just ((x,y), r) -> if y == 1 then (x,r) else getMin r
-                                                             Nothing         -> error "ran out of keys!!!"
+                                        getMin bl = let skipped = dropWhile (\(_,use) -> not use) bl
+                                                    in ((fst . head) skipped, tail skipped) 
 
-                                        -- the backlog, with new keys added from the next batch of sums
-                                        updated  = foldr mergeKeys backlog nextBatch 
-                                                      where -- a helper function to merge keys into the backlog, maxing out the
-                                                            -- value at 2... so we never overflow 
-                                                            mergeKeys key mapping = M.insertWith (\_ _ -> 2) key 1 mapping
+                                        -- the next group of numbers to add to the backlog
+                                        nextBatch = map (+ recent) $ takeWhile (< recent) nums
 
-                                                            -- the next group of numbers to add to the backlog
-                                                            nextBatch = map (+ recent) $ takeWhile (< recent) nums
+                                        -- merge a new batch of numbers with an existing backlog 
+                                        -- anything that matches gets a snd of False
+                                        merge [] bl = bl 
+                                        merge x  [] = map (\v -> (v,True)) x
+                                        merge xl@(x:xs) bl@((b,_):bs)
+                                           | x == b    = (x,False) : merge xs bs 
+                                           | x <  b    = (x,True)  : merge xs bl 
+                                           | otherwise = (head bl) : merge xl bs 
 
               -- the return value is the next number int he sequence, and a recursive call to
               -- continue the computation
-              in minKey : nextUlam minKey rest
+              in minNum : nextUlam minNum rest
 
       -- return the list we are generating
       in nums
+
