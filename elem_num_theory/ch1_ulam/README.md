@@ -1,6 +1,6 @@
 # Ulam Series
 
-I did this program in scala and haskell.
+I did this program in scala and haskell, and for fun made a version in Go.
 
 ~~~~~~
 Welcome to Scala 2.12.0-RC2 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_101).
