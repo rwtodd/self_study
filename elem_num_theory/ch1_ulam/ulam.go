@@ -38,8 +38,7 @@ func (q *oqArray) Insert(keys []int64) {
 	newq := make(oqArray, 0, len(keys)+len(*q))
 	idxOQ, idxKeys := 0, 0
 
-	for (idxOQ < len(*q)) && (idxKeys < len(keys)) {
-
+	for idxOQ < len(*q) {
 		comparison := (*q)[idxOQ].key - keys[idxKeys]
 		switch {
 		case comparison == 0:
@@ -57,9 +56,6 @@ func (q *oqArray) Insert(keys []int64) {
 	}
 
 	// now copy any that were left...
-	for _, v := range (*q)[idxOQ:] {
-		newq = append(newq, v)
-	}
 	for _, v := range keys[idxKeys:] {
 		newq = append(newq, oqEntry{v, true})
 	}
@@ -70,9 +66,10 @@ func (q *oqArray) Insert(keys []int64) {
 
 // generates an ulam sequence...
 func ulam(port chan int64, first int64, second int64) {
+	port <- first
+	sofar := []int64{first}
 	var q OrderedQueue = NewOrderedQueue()
-	q.Insert([]int64{first, second})
-	sofar := []int64{}
+	q.Insert([]int64{second})
 
 	for {
 		nxt := q.PopInt()
