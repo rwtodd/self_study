@@ -45,3 +45,53 @@ class UlamSeries private (a: BigInteger, b: BigInteger) {
      }
 }
 
+
+// Here is an alternate implementation which is much faster and less memory-intensive.
+// It creates an Iterator[Long], and keeps track of the backlog via ArrayBuffers.
+// The strategy is modeled after the Go implementation.
+class UlamIt(one: Long, two:Long) extends Iterator[Long] {
+   import scala.collection.mutable.ArrayBuffer
+   type BLEntry = Tuple2[Long,Boolean]
+   
+   private val sofar = ArrayBuffer[Long](one)
+   private var backlog = ArrayBuffer[BLEntry]( (two, false) ) 
+   private var first = true
+
+   private def mergeNew(sums: ArrayBuffer[Long]) : Unit = {
+      val merged = new ArrayBuffer[BLEntry]()
+      merged.sizeHint(backlog.size + sofar.size)
+
+      var sIdx = 0 
+      var bIdx = 0
+      while (bIdx < backlog.size) {
+         (backlog(bIdx)._1 - sums(sIdx)) match {
+         case 0 =>  merged += new BLEntry( backlog(bIdx)._1, true )
+                    bIdx += 1
+                    sIdx += 1
+         case x if x < 0 => merged += backlog(bIdx)
+                            bIdx += 1
+         case _  => merged += new BLEntry(sums(sIdx), false)
+                    sIdx += 1
+         }
+      } 
+      merged ++= sums.view(sIdx, sums.size).map { v => (v,false) }
+      backlog = merged
+   }
+
+   private def popBacklog() : Long = {
+      val which = backlog.indexWhere( { bl => bl._2 == false } )
+      val ans = backlog(which)._1
+      backlog = backlog.drop(which+1)
+      ans
+   }
+
+   override def hasNext() = true 
+   override def next() : Long = {
+       if(first) { first = false; return sofar(0) }
+
+       val nxt = popBacklog()
+       mergeNew( sofar.map { _ + nxt } )
+       sofar += nxt
+       nxt 
+   } 
+}
