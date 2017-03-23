@@ -55,22 +55,18 @@ class TagState:
        self.__close()
        t = self.tags[-1]
   def newBlank(self):
-     self.llb = True
      if self.tags[-1] == 'p':
        self.__close()
   def newScene(self,l):
-     self.llb = False
      self.closeTo('script')   
      self.__tag('scene')
      print(f'<title>{l.strip()}</title>')
   def newSpeaker(self,s):
-     self.llb = False
      self.closeTo('scene')
      print()
      self.__tag('speaker')
      print(f'<name>{s.strip()}</name>',end='')
   def newSpeech(self,s):
-     self.llb = False
      # close and open stage directions
      if self.tags[-1] == 'sdir':
         self.__close()
@@ -79,7 +75,6 @@ class TagState:
         self.__tag('p')
      print(s.strip())
   def newDesc(self,d):
-     self.llb = False
      if self.tags[-1] != 'p':
         # we are not already in a paragraph...
         if self.tags[-1] != 'desc':
@@ -90,7 +85,6 @@ class TagState:
         self.__tag('p')
      print(d.strip())
   def newStageDir(self, sd):
-     self.llb = False
      if self.tags[-1] != 'sdir':
         if self.tags[-1] == 'p': 
            self.__close()
@@ -125,6 +119,7 @@ def procline(ts, l):
     print('**********')
     print(f'**********BAD LINE {loc} <{l}>')
     print('**********')
+  ts.llb = (loc == 0)   # remember if the line was blank
  
 def process(fn):
   with open(fn,"r") as ifile:
@@ -134,5 +129,5 @@ def process(fn):
        procline(ts,line)
     ts.done()
 
-process('GhostWorldScript.ms')
+process('Script.input')
 
