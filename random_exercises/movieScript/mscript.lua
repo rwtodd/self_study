@@ -95,13 +95,6 @@ function takeStageDir(ln)
 	io.write(trim(ln),'\n')
 end
 
-function startScript()
-	openTag("script")
-	tagState.llb = true
-end
-
-function endScript() closeTo(nil) end
-
 -- --------------------------------
 --  0 blank
 -- 15 description / SCENE
@@ -126,10 +119,8 @@ function procLine(ln)
 	tagState.llb = (loc == 0)  -- remember if the line was blank
 end 
 
-function process(fn)
-	startScript()
-	for ln in io.lines(fn) do procLine(ln) end
-	endScript()
-end
-
-process('Script.input')
+-- proces the script file
+openTag("script")
+tagState.llb = true
+for ln in io.lines('Script.input') do procLine(ln) end
+closeTo(nil)
