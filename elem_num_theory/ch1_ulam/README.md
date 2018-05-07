@@ -1,7 +1,8 @@
 # Ulam Series
 
 I did this program in scala and haskell, and for fun made a version in Go.
-In Jan 2017, I did a version in common lisp.
+In Jan 2017, I did a version in common lisp.  In May 2018, I did a version
+as a python generator.
 
 ~~~~~~
 Welcome to Scala 2.12.0-RC2 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_101).
