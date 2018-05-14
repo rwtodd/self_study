@@ -1,0 +1,19 @@
+.\" Here's my first try at nroff/troff for a non-manpage.
+.\" As you can see, a full-line comment with no implicit
+.\" carriage return must start with a dot.
+.po 1i             \" Set the page offset (left-margin) to 1 inch
+.ad r              \" adjust right
+2018-05-13
+.sp 2v             \" space two lines
+.ad c              \" adjust center
+A Sampling of Text
+.sp
+.ad b              \" adjust both
+So, here's some text. I hope this works. I really think that
+troff has a lot going for it relative to TeX, in that the
+whole system is a lot simpler. It's too bad that Knuth didn't
+just enhance the existing system.
+
+I'm told that using a blank line separates paragraphs, just as
+in TeX, though I think the common macro systems make you use
+an indicator like PP or LP.
