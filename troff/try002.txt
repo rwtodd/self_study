@@ -1,0 +1,68 @@
+.\" Here's my first try at nroff/troff for a non-manpage.
+.\" As you can see, a full-line comment with no implicit
+.\" carriage return must start with a dot.
+.po 1i             \" Set the page offset (left-margin) to 1 inch
+.ad r              \" adjust right
+2018-05-14
+.sp 2v             \" space two lines
+.ad c              \" adjust center
+A Sampling of Text
+.sp
+.ad b              \" adjust both
+So, here's some text. I hope this works. I really think that
+troff has a lot going for it relative to TeX, in that the
+whole system is a lot simpler. It's too bad that Knuth didn't
+just enhance the existing system.
+
+I'm told that using a blank line separates paragraphs, just as
+in TeX, though I think the common macro systems make you use
+an indicator like PP or LP.
+
+.\" So now let's indent a paragraph on both sides by 0.5in...
+.po +0.5i
+.ll -1i
+Now we have a paragraph that is indented on both sides for
+emphasis. We are really emphasizing this text, because it
+deserves some emphasis.  I think it's great that it is so
+easy to adjust things on a fundamental level. I guess in
+TeX you had "narrower," or whatever it is. So call this
+one a tie.
+
+.po -0.5i
+.ll +1i
+And here we are, back to our regularly scheduled program
+of full-length lines. It's been really great to see this
+program in action.
+
+The question on my mind right now is: how to starta new
+paragraph without skipping a line. Like, if I wanted to
+just indent paragraphs instead of block formatting?
+.br \" try the .br command...
+.ti 0.33i \" indent the first line 0.33 inches
+Does this work? I think it does! Well I'll be. So, using the
+br command breaks the line and lets us start a new paragraph,
+and the ti command lets us indent the first line. It doesn't
+stick for new paragraphs, though... so ultimately BR followed
+by TI is the way to make a new indented paragraph.
+
+.\" Now for some hanging indents...
+.in +4n
+.ti -4n
+01.\ With the IN and TI commands together, I can make a hanging
+indent, suitable for things like numbered lists. Just use the 
+same relative values on both sides, and attempt to make it so
+that the text lines up.
+.br
+.ti -4n
+02.\ The first try I had at this, the space between the number and
+the text on one of the lines was stretched. To remedy that, I needed
+to use a non-stretching space (which is indicated by backslash-escaping
+it) between them.
+.br
+.ti -4n
+03.\ Probably there is a more sophisticated method (like tabs of some
+kind?) to help things line up in the face of proportional fonts. But
+for now, it's nice to be able to approximate things at a low level.
+
+.in -4n
+And, now, everything is back to normal!
